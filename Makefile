@@ -7,15 +7,17 @@ help:
 > @echo ""
 > @echo "Available commands:"
 > @echo "  make help  - Show this command list"
-> @echo "  make test  - Run placeholder test checks"
-> @echo "  make lint  - Run placeholder lint checks"
-> @echo "  make docs  - Run placeholder documentation checks"
+> @echo "  make test  - Run backend tests"
+> @echo "  make lint  - Run backend lint checks"
+> @echo "  make docs  - Show documentation entry points"
 
 test:
-> @echo "Phase 00: no automated tests yet. Placeholder test command passed."
+> cd backend && python -m pytest
 
 lint:
-> @echo "Phase 00: no lint checks yet. Placeholder lint command passed."
+> cd backend && python -m ruff check .
 
 docs:
-> @echo "Phase 00: documentation files are present. Placeholder docs command passed."
+> @echo "Read docs/00-project-overview.md"
+> @echo "Read docs/01-backend-foundation.md"
+> @echo "Read docs/glossary.md"

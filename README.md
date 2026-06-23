@@ -32,17 +32,18 @@ No phase may begin until the previous phase is complete. This keeps the project 
 
 ## Current Phase Status
 
-Current phase: Phase 00 - Repository Bootstrap
+Current phase: Phase 01 - Backend Foundation
 
-Status: repository skeleton only
+Status: backend foundation added
 
-This phase creates the basic files and folders needed for the project. It does not create the real backend, the real frontend, a database, API routes, UI screens, agents, or workflow execution logic.
+This phase adds a minimal FastAPI backend with health endpoints, configuration, logging setup, and backend tests. It does not add database models, workflow execution, frontend code, Docker, real agents, or optional tools.
 
 ## How To Use This Repository
 
 Start by reading:
 
 - `docs/00-project-overview.md`
+- `docs/01-backend-foundation.md`
 - `docs/glossary.md`
 - `backend/README.md`
 - `frontend/README.md`
@@ -56,7 +57,7 @@ make lint
 make docs
 ```
 
-These commands are placeholders in Phase 00. Real checks will be added in later phases when there is real code to check.
+In Phase 01, `make test` and `make lint` delegate to the backend test and lint commands.
 
 ## Phase Rule
 

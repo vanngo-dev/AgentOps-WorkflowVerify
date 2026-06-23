@@ -1,16 +1,60 @@
 # Backend
 
-This folder is reserved for the backend service.
+This folder contains the Phase 01 FastAPI backend foundation.
 
-Phase 00 does not create the backend yet. No API server, database layer, workflow engine, agent runner, or verification service belongs in this phase.
+Phase 01 creates the smallest useful backend: an app entry point, health endpoints, configuration, logging setup, and tests. It does not create database models, workflow execution, real agents, queues, or approval logic yet.
 
-When the backend phase begins, this folder will become the place where we build the server-side pieces step by step:
+## Structure
 
-- workflow definitions
-- simulated agent execution
-- verification rules
-- approval state
-- observability records
-- API endpoints
+```text
+backend/
+  app/
+    main.py
+    api/
+      health.py
+    core/
+      config.py
+      logging.py
+    tests/
+      test_health.py
+  pyproject.toml
+  README.md
+```
 
-For now, this README is here so the repository has a clear place for backend work when the phase gate opens.
+## Run Locally
+
+Install the backend dependencies in your Python environment, then run:
+
+```sh
+uvicorn app.main:app --reload
+```
+
+Check the health endpoints:
+
+```sh
+curl http://localhost:8000/health
+curl http://localhost:8000/ready
+```
+
+Expected responses:
+
+```json
+{"status":"ok"}
+{"status":"ready"}
+```
+
+## Test
+
+From this folder:
+
+```sh
+pytest
+ruff check .
+```
+
+If those console scripts are not on your PATH, use:
+
+```sh
+python -m pytest
+python -m ruff check .
+```
