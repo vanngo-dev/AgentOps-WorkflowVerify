@@ -32,11 +32,11 @@ No phase may begin until the previous phase is complete. This keeps the project 
 
 ## Current Phase Status
 
-Current phase: Phase 01 - Backend Foundation
+Current phase: Phase 02 - Database And Migrations
 
-Status: backend foundation added
+Status: database models and migrations added
 
-This phase adds a minimal FastAPI backend with health endpoints, configuration, logging setup, and backend tests. It does not add database models, workflow execution, frontend code, Docker, real agents, or optional tools.
+This phase adds SQLAlchemy models, database session setup, Alembic migrations, and model tests. It does not add workflow API endpoints, agent simulator logic, frontend code, Docker, or optional tools.
 
 ## How To Use This Repository
 
@@ -44,6 +44,7 @@ Start by reading:
 
 - `docs/00-project-overview.md`
 - `docs/01-backend-foundation.md`
+- `docs/02-database-model.md`
 - `docs/glossary.md`
 - `backend/README.md`
 - `frontend/README.md`
@@ -57,7 +58,7 @@ make lint
 make docs
 ```
 
-In Phase 01, `make test` and `make lint` delegate to the backend test and lint commands.
+In Phase 02, `make test` and `make lint` delegate to the backend test and lint commands.
 
 ## Phase Rule
 

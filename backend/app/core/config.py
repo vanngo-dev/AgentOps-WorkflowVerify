@@ -7,9 +7,13 @@ class Settings(BaseSettings):
     app_name: str = "AgentOps Workflow Verification API"
     app_env: str = "local"
     log_level: str = "INFO"
+    database_url: str = (
+        "postgresql+psycopg://postgres:postgres@localhost:5432/"
+        "agentops_workflow"
+    )
 
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=(".env", "../.env"),
         env_file_encoding="utf-8",
         extra="ignore",
     )

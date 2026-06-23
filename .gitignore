@@ -34,3 +34,6 @@ Thumbs.db
 # Local generated data
 tmp/
 temp/
+*.db
+*.sqlite
+*.sqlite3
