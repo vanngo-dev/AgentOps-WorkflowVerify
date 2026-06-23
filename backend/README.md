@@ -1,8 +1,8 @@
 # Backend
 
-This folder contains the FastAPI backend foundation, database model layer, workflow run API, and Phase 04 deterministic agent simulator.
+This folder contains the FastAPI backend foundation, database model layer, workflow run API, deterministic agent simulator, and Phase 05 validation engine.
 
-Phase 04 adds deterministic workflow execution with five named simulated agent steps. It does not add validation engine logic, human approval flow, frontend code, Docker, real LLM calls, or external agent frameworks.
+Phase 05 adds deterministic validation rules after simulated execution. It does not add human approval endpoints, frontend code, Docker, real LLM calls, or background workers.
 
 ## Structure
 
@@ -28,12 +28,14 @@ backend/
       workflow_run.py
     services/
       agent_simulator.py
+      validation_engine.py
     tests/
       test_health.py
       test_models.py
       test_workflow_runs_api.py
       test_agent_simulator.py
       test_workflow_execution_api.py
+      test_validation_engine.py
   alembic/
   pyproject.toml
   README.md

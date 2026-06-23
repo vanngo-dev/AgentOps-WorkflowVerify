@@ -9,7 +9,7 @@ from sqlalchemy.pool import StaticPool
 from app.db.base import Base
 from app.db.session import get_db
 from app.main import app
-from app.models import AgentStep, WorkflowRun
+from app.models import AgentStep, ValidationResult, WorkflowRun
 from app.services.agent_simulator import SIMULATED_STEP_NAMES
 
 
@@ -42,16 +42,22 @@ def client(db_session: Session) -> Generator[TestClient, None, None]:
     app.dependency_overrides.clear()
 
 
-def create_workflow_run(client: TestClient) -> dict[str, object]:
+def create_workflow_run(
+    client: TestClient,
+    input_payload: dict[str, object] | None = None,
+) -> dict[str, object]:
+    if input_payload is None:
+        input_payload = {
+            "vendor": "Acme Supplies",
+            "amount": 1250,
+            "invoice_id": "INV-1001",
+        }
+
     response = client.post(
         "/api/workflow-runs",
         json={
             "name": "sample invoice review",
-            "input_payload": {
-                "vendor": "Acme Supplies",
-                "amount": 1250,
-                "invoice_id": "INV-1001",
-            },
+            "input_payload": input_payload,
         },
     )
 
@@ -70,7 +76,7 @@ def test_execute_workflow_run_success(
     assert response.status_code == 200
     data = response.json()
     assert data["status"] == "completed"
-    assert data["risk_level"] == "unknown"
+    assert data["risk_level"] == "medium"
     assert data["completed_at"] is not None
     assert data["output_payload"] == {
         "decision": "approve",
@@ -93,6 +99,116 @@ def test_execute_workflow_run_success(
     )
     assert len(steps) == 5
     assert [step.step_name for step in steps] == list(SIMULATED_STEP_NAMES)
+
+    validation_results = list(
+        db_session.scalars(
+            select(ValidationResult).where(
+                ValidationResult.workflow_run_id == created["id"],
+            ),
+        ).all(),
+    )
+    assert len(validation_results) == 5
+
+
+def test_execute_low_risk_workflow_completes(client: TestClient) -> None:
+    created = create_workflow_run(
+        client,
+        {
+            "vendor": "Acme Supplies",
+            "amount": 500,
+            "invoice_id": "INV-LOW-1",
+        },
+    )
+
+    response = client.post(f"/api/workflow-runs/{created['id']}/execute")
+
+    assert response.status_code == 200
+    assert response.json()["status"] == "completed"
+    assert response.json()["risk_level"] == "low"
+    assert response.json()["completed_at"] is not None
+
+
+def test_execute_high_risk_workflow_requires_approval(client: TestClient) -> None:
+    created = create_workflow_run(
+        client,
+        {
+            "vendor": "Acme Supplies",
+            "amount": 7500,
+            "invoice_id": "INV-HIGH-1",
+        },
+    )
+
+    response = client.post(f"/api/workflow-runs/{created['id']}/execute")
+
+    assert response.status_code == 200
+    assert response.json()["status"] == "approval_required"
+    assert response.json()["risk_level"] == "high"
+    assert response.json()["completed_at"] is None
+
+
+def test_execute_missing_vendor_fails_validation(client: TestClient) -> None:
+    created = create_workflow_run(
+        client,
+        {
+            "amount": 500,
+            "invoice_id": "INV-MISSING-VENDOR",
+        },
+    )
+
+    response = client.post(f"/api/workflow-runs/{created['id']}/execute")
+
+    assert response.status_code == 200
+    assert response.json()["status"] == "validation_failed"
+    assert response.json()["risk_level"] == "low"
+    assert response.json()["completed_at"] is not None
+
+
+def test_execute_missing_invoice_id_fails_validation(client: TestClient) -> None:
+    created = create_workflow_run(
+        client,
+        {
+            "vendor": "Acme Supplies",
+            "amount": 500,
+        },
+    )
+
+    response = client.post(f"/api/workflow-runs/{created['id']}/execute")
+
+    assert response.status_code == 200
+    assert response.json()["status"] == "validation_failed"
+
+
+def test_execute_negative_amount_fails_validation(client: TestClient) -> None:
+    created = create_workflow_run(
+        client,
+        {
+            "vendor": "Acme Supplies",
+            "amount": -50,
+            "invoice_id": "INV-NEGATIVE",
+        },
+    )
+
+    response = client.post(f"/api/workflow-runs/{created['id']}/execute")
+
+    assert response.status_code == 200
+    assert response.json()["status"] == "validation_failed"
+    assert response.json()["risk_level"] == "unknown"
+
+
+def test_execute_missing_amount_fails_validation(client: TestClient) -> None:
+    created = create_workflow_run(
+        client,
+        {
+            "vendor": "Acme Supplies",
+            "invoice_id": "INV-MISSING-AMOUNT",
+        },
+    )
+
+    response = client.post(f"/api/workflow-runs/{created['id']}/execute")
+
+    assert response.status_code == 200
+    assert response.json()["status"] == "validation_failed"
+    assert response.json()["risk_level"] == "unknown"
 
 
 def test_execute_unknown_workflow_run_returns_404(client: TestClient) -> None:

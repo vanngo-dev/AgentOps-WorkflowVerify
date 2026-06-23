@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 
 from app.models.agent_step import AgentStep
 from app.models.workflow_run import WorkflowRun
+from app.services.validation_engine import TERMINAL_STATUSES, validate_workflow_run
 
 SIMULATED_STEP_NAMES = (
     "inspect_input",
@@ -52,9 +53,14 @@ def execute_workflow_run(db: Session, workflow_run: WorkflowRun) -> WorkflowRun:
     final_output = context["produce_decision"]
     finished_at = utc_now()
     workflow_run.output_payload = final_output
-    workflow_run.status = "completed"
-    workflow_run.completed_at = finished_at
     workflow_run.updated_at = finished_at
+
+    final_status = validate_workflow_run(db, workflow_run)
+    if final_status in TERMINAL_STATUSES:
+        workflow_run.completed_at = utc_now()
+    else:
+        workflow_run.completed_at = None
+    workflow_run.updated_at = utc_now()
 
     db.commit()
     db.refresh(workflow_run)

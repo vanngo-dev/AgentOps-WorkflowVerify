@@ -48,6 +48,7 @@ def test_agent_simulator_completes_workflow_run(db_session: Session) -> None:
     executed_run = execute_workflow_run(db_session, workflow_run)
 
     assert executed_run.status == "completed"
+    assert executed_run.risk_level == "medium"
     assert executed_run.completed_at is not None
     assert executed_run.output_payload == {
         "decision": "approve",

@@ -32,11 +32,11 @@ No phase may begin until the previous phase is complete. This keeps the project 
 
 ## Current Phase Status
 
-Current phase: Phase 04 - Agent Simulator
+Current phase: Phase 05 - Validation Engine
 
-Status: deterministic agent simulator added
+Status: deterministic validation engine added
 
-This phase adds a deterministic simulated agent that executes an existing workflow run and records step traces. It does not add validation engine logic, human approval flow, frontend code, Docker, real LLM calls, LangGraph, or any external agent framework.
+This phase adds deterministic validation rules that run after simulated execution, store validation results, assign risk levels, and choose the final workflow status. It does not add human approval endpoints, frontend code, Docker, real LLM calls, or background workers.
 
 ## How To Use This Repository
 
@@ -47,6 +47,7 @@ Start by reading:
 - `docs/02-database-model.md`
 - `docs/03-workflow-api.md`
 - `docs/04-agent-simulator.md`
+- `docs/05-validation-engine.md`
 - `docs/glossary.md`
 - `backend/README.md`
 - `frontend/README.md`
@@ -60,7 +61,7 @@ make lint
 make docs
 ```
 
-In Phase 04, `make test` and `make lint` delegate to the backend test and lint commands.
+In Phase 05, `make test` and `make lint` delegate to the backend test and lint commands.
 
 ## Phase Rule
 

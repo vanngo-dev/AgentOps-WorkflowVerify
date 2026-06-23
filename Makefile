@@ -23,4 +23,5 @@ docs:
 > @echo "Read docs/02-database-model.md"
 > @echo "Read docs/03-workflow-api.md"
 > @echo "Read docs/04-agent-simulator.md"
+> @echo "Read docs/05-validation-engine.md"
 > @echo "Read docs/glossary.md"
