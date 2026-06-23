@@ -1,8 +1,8 @@
 # Backend
 
-This folder contains the FastAPI backend foundation, database model layer, and Phase 03 workflow run API.
+This folder contains the FastAPI backend foundation, database model layer, workflow run API, and Phase 04 deterministic agent simulator.
 
-Phase 03 adds REST endpoints for creating, listing, and reading workflow runs. It does not execute workflows, create agent steps, run validation logic, collect approval decisions, or add frontend code.
+Phase 04 adds deterministic workflow execution with five named simulated agent steps. It does not add validation engine logic, human approval flow, frontend code, Docker, real LLM calls, or external agent frameworks.
 
 ## Structure
 
@@ -26,10 +26,14 @@ backend/
       approval_decision.py
     schemas/
       workflow_run.py
+    services/
+      agent_simulator.py
     tests/
       test_health.py
       test_models.py
       test_workflow_runs_api.py
+      test_agent_simulator.py
+      test_workflow_execution_api.py
   alembic/
   pyproject.toml
   README.md
@@ -66,6 +70,7 @@ curl -X POST http://localhost:8000/api/workflow-runs ^
 
 curl http://localhost:8000/api/workflow-runs
 curl http://localhost:8000/api/workflow-runs/1
+curl -X POST http://localhost:8000/api/workflow-runs/1/execute
 ```
 
 These workflow endpoints need a migrated database. For normal development, use PostgreSQL and run `alembic upgrade head` first.

@@ -22,4 +22,5 @@ docs:
 > @echo "Read docs/01-backend-foundation.md"
 > @echo "Read docs/02-database-model.md"
 > @echo "Read docs/03-workflow-api.md"
+> @echo "Read docs/04-agent-simulator.md"
 > @echo "Read docs/glossary.md"

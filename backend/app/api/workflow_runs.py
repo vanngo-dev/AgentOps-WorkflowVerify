@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from app.db.session import get_db
 from app.models.workflow_run import WorkflowRun
 from app.schemas.workflow_run import WorkflowRunCreate, WorkflowRunRead
+from app.services.agent_simulator import execute_workflow_run
 
 router = APIRouter(prefix="/api/workflow-runs", tags=["workflow runs"])
 
@@ -35,6 +36,28 @@ def list_workflow_runs(db: Session = Depends(get_db)) -> list[WorkflowRun]:
     statement = select(WorkflowRun).order_by(WorkflowRun.id)
 
     return list(db.scalars(statement).all())
+
+
+@router.post("/{workflow_run_id}/execute", response_model=WorkflowRunRead)
+def execute_workflow_run_endpoint(
+    workflow_run_id: int,
+    db: Session = Depends(get_db),
+) -> WorkflowRun:
+    workflow_run = db.get(WorkflowRun, workflow_run_id)
+
+    if workflow_run is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Workflow run not found.",
+        )
+
+    if workflow_run.status != "created":
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Workflow run cannot be executed unless status is created.",
+        )
+
+    return execute_workflow_run(db, workflow_run)
 
 
 @router.get("/{workflow_run_id}", response_model=WorkflowRunRead)

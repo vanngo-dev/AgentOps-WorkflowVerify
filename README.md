@@ -32,11 +32,11 @@ No phase may begin until the previous phase is complete. This keeps the project 
 
 ## Current Phase Status
 
-Current phase: Phase 03 - Workflow Run API
+Current phase: Phase 04 - Agent Simulator
 
-Status: workflow run API added
+Status: deterministic agent simulator added
 
-This phase adds REST API endpoints to create, list, and read workflow runs. It does not execute workflows, create agent steps, run validation logic, collect approval decisions, add frontend code, or add Docker.
+This phase adds a deterministic simulated agent that executes an existing workflow run and records step traces. It does not add validation engine logic, human approval flow, frontend code, Docker, real LLM calls, LangGraph, or any external agent framework.
 
 ## How To Use This Repository
 
@@ -46,6 +46,7 @@ Start by reading:
 - `docs/01-backend-foundation.md`
 - `docs/02-database-model.md`
 - `docs/03-workflow-api.md`
+- `docs/04-agent-simulator.md`
 - `docs/glossary.md`
 - `backend/README.md`
 - `frontend/README.md`
@@ -59,7 +60,7 @@ make lint
 make docs
 ```
 
-In Phase 03, `make test` and `make lint` delegate to the backend test and lint commands.
+In Phase 04, `make test` and `make lint` delegate to the backend test and lint commands.
 
 ## Phase Rule
 
