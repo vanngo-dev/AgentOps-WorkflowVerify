@@ -20,4 +20,6 @@ lint:
 docs:
 > @echo "Read docs/00-project-overview.md"
 > @echo "Read docs/01-backend-foundation.md"
+> @echo "Read docs/02-database-model.md"
+> @echo "Read docs/03-workflow-api.md"
 > @echo "Read docs/glossary.md"

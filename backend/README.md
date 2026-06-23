@@ -1,8 +1,8 @@
 # Backend
 
-This folder contains the FastAPI backend foundation and Phase 02 database model layer.
+This folder contains the FastAPI backend foundation, database model layer, and Phase 03 workflow run API.
 
-Phase 02 adds SQLAlchemy models, database session setup, Alembic migrations, and SQLite-backed model tests. It does not create workflow API endpoints, workflow execution, real agents, queues, approval workflows, or frontend code yet.
+Phase 03 adds REST endpoints for creating, listing, and reading workflow runs. It does not execute workflows, create agent steps, run validation logic, collect approval decisions, or add frontend code.
 
 ## Structure
 
@@ -12,6 +12,7 @@ backend/
     main.py
     api/
       health.py
+      workflow_runs.py
     core/
       config.py
       logging.py
@@ -23,9 +24,12 @@ backend/
       agent_step.py
       validation_result.py
       approval_decision.py
+    schemas/
+      workflow_run.py
     tests/
       test_health.py
       test_models.py
+      test_workflow_runs_api.py
   alembic/
   pyproject.toml
   README.md
@@ -52,6 +56,19 @@ Expected responses:
 {"status":"ok"}
 {"status":"ready"}
 ```
+
+Create and read workflow runs:
+
+```sh
+curl -X POST http://localhost:8000/api/workflow-runs ^
+  -H "Content-Type: application/json" ^
+  -d "{\"name\":\"sample invoice review\",\"input_payload\":{\"vendor\":\"Acme\",\"amount\":1250,\"invoice_id\":\"INV-1001\"}}"
+
+curl http://localhost:8000/api/workflow-runs
+curl http://localhost:8000/api/workflow-runs/1
+```
+
+These workflow endpoints need a migrated database. For normal development, use PostgreSQL and run `alembic upgrade head` first.
 
 ## Test
 
