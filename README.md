@@ -32,11 +32,11 @@ No phase may begin until the previous phase is complete. This keeps the project 
 
 ## Current Phase Status
 
-Current phase: Phase 06 - Human Approval Flow
+Current phase: Phase 07 - Frontend Shell
 
-Status: human approval flow added
+Status: frontend shell added
 
-This phase adds approve and reject endpoints for workflows waiting in `approval_required` status. It does not add frontend code, Docker, real LLM calls, or background workers.
+This phase adds the React and TypeScript frontend foundation with routing, layout, navigation, placeholder pages, and frontend tests. It does not connect to backend data, build dashboards, add trace viewing, add approval UI, add Docker, or change backend behavior.
 
 ## How To Use This Repository
 
@@ -49,6 +49,7 @@ Start by reading:
 - `docs/04-agent-simulator.md`
 - `docs/05-validation-engine.md`
 - `docs/06-human-approval.md`
+- `docs/07-frontend-shell.md`
 - `docs/glossary.md`
 - `backend/README.md`
 - `frontend/README.md`
@@ -62,7 +63,7 @@ make lint
 make docs
 ```
 
-In Phase 06, `make test` and `make lint` delegate to the backend test and lint commands.
+In Phase 07, `make test` and `make lint` delegate to the backend test and lint commands. Frontend checks run from the `frontend` folder with `npm test`.
 
 ## Phase Rule
 

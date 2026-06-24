@@ -1,16 +1,50 @@
 # Frontend
 
-This folder is reserved for the frontend application.
+This folder contains the Phase 07 React and TypeScript frontend shell.
 
-Phase 00 does not create the frontend yet. No app shell, routing, components, dashboards, review screens, or styling system belongs in this phase.
+Phase 07 creates the app foundation: Vite, React, TypeScript, routing, layout, navigation, placeholder pages, an API client placeholder, and frontend tests. It does not connect to backend data, build the workflow dashboard, build the trace viewer, add approval UI, or add Docker.
 
-When the frontend phase begins, this folder will become the place where we build the user-facing workflow review experience step by step:
+## Structure
 
-- workflow run lists
-- verification results
-- approval screens
-- logs and trace views
-- status indicators
-- operator controls
+```text
+frontend/
+  src/
+    api/
+      client.ts
+    components/
+      Layout.tsx
+      Navigation.tsx
+    pages/
+      HomePage.tsx
+      WorkflowRunsPage.tsx
+    test/
+      setup.ts
+    tests/
+      App.test.tsx
+    App.tsx
+    main.tsx
+    styles.css
+  index.html
+  package.json
+  tsconfig.json
+  vite.config.ts
+```
 
-For now, this README is here so the repository has a clear place for frontend work when the phase gate opens.
+## Run
+
+```sh
+npm install
+npm run dev
+```
+
+Open:
+
+```text
+http://localhost:5173
+```
+
+## Test
+
+```sh
+npm test
+```

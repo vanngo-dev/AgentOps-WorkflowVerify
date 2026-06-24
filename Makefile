@@ -25,4 +25,5 @@ docs:
 > @echo "Read docs/04-agent-simulator.md"
 > @echo "Read docs/05-validation-engine.md"
 > @echo "Read docs/06-human-approval.md"
+> @echo "Read docs/07-frontend-shell.md"
 > @echo "Read docs/glossary.md"
