@@ -7,7 +7,7 @@
     "dev": "node scripts/run-vite-dev.mjs",
     "test": "node scripts/run-vitest.mjs",
     "test:watch": "vitest",
-    "build": "tsc -b && vite build",
+    "build": "tsc --noEmit && node scripts/run-vite-build.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

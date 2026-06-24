@@ -7,11 +7,12 @@ patchWindowsNetworkDriveProbe();
 const { startVitest } = await import("vitest/node");
 await startVitest(
   "test",
-  ["src/tests/App.test.tsx"],
+  [],
   {
     config: false,
     globals: true,
     environment: "jsdom",
+    include: ["src/tests/**/*.test.tsx"],
     pool: "vmThreads",
     server: {
       deps: {

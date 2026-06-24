@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     app_name: str = "AgentOps Workflow Verification API"
     app_env: str = "local"
     log_level: str = "INFO"
+    cors_allowed_origins: tuple[str, ...] = ("http://localhost:5173",)
     database_url: str = (
         "postgresql+psycopg://postgres:postgres@localhost:5432/"
         "agentops_workflow"

@@ -12,6 +12,7 @@ __pycache__/
 .ruff_cache/
 .venv/
 venv/
+*.tsbuildinfo
 
 # Node and frontend tooling
 node_modules/

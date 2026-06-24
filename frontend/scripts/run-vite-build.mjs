@@ -1,5 +1,5 @@
 import react from "@vitejs/plugin-react";
-import { createServer } from "vite";
+import { build } from "vite";
 
 import {
   patchWindowsNetworkDriveProbe,
@@ -8,7 +8,12 @@ import {
 
 patchWindowsNetworkDriveProbe();
 
-const server = await createServer({
+await build({
+  build: {
+    emptyOutDir: true,
+    minify: false,
+    outDir: "dist",
+  },
   configFile: false,
   esbuild: {
     exclude: /.*/,
@@ -19,19 +24,4 @@ const server = await createServer({
   },
   plugins: [typescriptTransformPlugin(), react()],
   root: process.cwd(),
-  server: {
-    host: "127.0.0.1",
-    port: 5173,
-  },
 });
-
-await server.listen();
-server.printUrls();
-
-async function shutdown() {
-  await server.close();
-  process.exit(0);
-}
-
-process.on("SIGINT", shutdown);
-process.on("SIGTERM", shutdown);

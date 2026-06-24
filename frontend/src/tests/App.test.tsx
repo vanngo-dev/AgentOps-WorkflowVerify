@@ -3,6 +3,20 @@ import userEvent from "@testing-library/user-event";
 
 import App from "../App";
 
+beforeEach(() => {
+  vi.stubGlobal(
+    "fetch",
+    vi.fn().mockResolvedValue({
+      json: async () => [],
+      ok: true,
+    }),
+  );
+});
+
+afterEach(() => {
+  vi.unstubAllGlobals();
+});
+
 function renderApp(initialPath = "/") {
   window.history.pushState({}, "", initialPath);
 
@@ -31,13 +45,13 @@ test("home page renders", () => {
   ).not.toBeNull();
 });
 
-test("workflow runs page placeholder renders", () => {
+test("workflow runs page placeholder renders", async () => {
   renderApp("/workflow-runs");
 
   expect(
     screen.getByRole("heading", { name: "Workflow Runs" }),
   ).not.toBeNull();
-  expect(screen.getByText("No workflow runs loaded yet.")).not.toBeNull();
+  expect(await screen.findByText("No workflow runs yet.")).not.toBeNull();
 });
 
 test("user can navigate to workflow runs", async () => {
@@ -49,4 +63,5 @@ test("user can navigate to workflow runs", async () => {
   expect(
     screen.getByRole("heading", { name: "Workflow Runs" }),
   ).not.toBeNull();
+  expect(await screen.findByText("No workflow runs yet.")).not.toBeNull();
 });

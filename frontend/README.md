@@ -1,33 +1,17 @@
 # Frontend
 
-This folder contains the Phase 07 React and TypeScript frontend shell.
+This folder contains the React and TypeScript frontend for the AgentOps Workflow Verification Platform.
 
-Phase 07 creates the app foundation: Vite, React, TypeScript, routing, layout, navigation, placeholder pages, an API client placeholder, and frontend tests. It does not connect to backend data, build the workflow dashboard, build the trace viewer, add approval UI, or add Docker.
+Phase 08 connects the Workflow Runs page to the FastAPI backend. The page can list workflow runs, create a new workflow run, execute runs that are still in `created` status, and show loading, empty, and error states.
 
-## Structure
+This phase does not add workflow detail pages, trace viewing, approve/reject UI, Playwright, Docker, or real LLM calls.
 
-```text
-frontend/
-  src/
-    api/
-      client.ts
-    components/
-      Layout.tsx
-      Navigation.tsx
-    pages/
-      HomePage.tsx
-      WorkflowRunsPage.tsx
-    test/
-      setup.ts
-    tests/
-      App.test.tsx
-    App.tsx
-    main.tsx
-    styles.css
-  index.html
-  package.json
-  tsconfig.json
-  vite.config.ts
+## Configuration
+
+Create a local `.env` file from `.env.example` when the backend runs somewhere other than the default URL.
+
+```sh
+VITE_API_BASE_URL=http://localhost:8000
 ```
 
 ## Run
@@ -40,11 +24,12 @@ npm run dev
 Open:
 
 ```text
-http://localhost:5173
+http://localhost:5173/workflow-runs
 ```
 
 ## Test
 
 ```sh
 npm test
+npm run build
 ```

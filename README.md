@@ -32,11 +32,11 @@ No phase may begin until the previous phase is complete. This keeps the project 
 
 ## Current Phase Status
 
-Current phase: Phase 07 - Frontend Shell
+Current phase: Phase 08 - Workflow Dashboard
 
-Status: frontend shell added
+Status: workflow dashboard added
 
-This phase adds the React and TypeScript frontend foundation with routing, layout, navigation, placeholder pages, and frontend tests. It does not connect to backend data, build dashboards, add trace viewing, add approval UI, add Docker, or change backend behavior.
+This phase connects the Workflow Runs page to the backend workflow API. It adds listing, create, execute, loading, empty, and error states. It does not add workflow detail pages, trace viewing, approve/reject UI, Playwright, Docker, or real LLM calls.
 
 ## How To Use This Repository
 
@@ -50,6 +50,7 @@ Start by reading:
 - `docs/05-validation-engine.md`
 - `docs/06-human-approval.md`
 - `docs/07-frontend-shell.md`
+- `docs/08-workflow-dashboard.md`
 - `docs/glossary.md`
 - `backend/README.md`
 - `frontend/README.md`
@@ -63,7 +64,7 @@ make lint
 make docs
 ```
 
-In Phase 07, `make test` and `make lint` delegate to the backend test and lint commands. Frontend checks run from the `frontend` folder with `npm test`.
+In Phase 08, `make test` and `make lint` delegate to the backend test and lint commands. Frontend checks run from the `frontend` folder with `npm test` and `npm run build`.
 
 ## Phase Rule
 
