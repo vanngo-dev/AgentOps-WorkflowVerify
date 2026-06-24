@@ -32,11 +32,11 @@ No phase may begin until the previous phase is complete. This keeps the project 
 
 ## Current Phase Status
 
-Current phase: Phase 11 - Docker Compose Local Environment
+Current phase: Phase 12 - GitHub Actions CI
 
-Status: Docker Compose local environment added
+Status: GitHub Actions CI added
 
-This phase adds a local Docker Compose environment with PostgreSQL, FastAPI backend, and React/Vite frontend services. It does not add GitHub Actions, real LLM calls, background workers, or redesign existing app behavior.
+This phase adds GitHub Actions CI for push and pull request quality gates. It runs backend tests and lint, frontend unit tests and build, Playwright E2E tests, and Docker Compose config validation. It does not add observability, trace IDs, real LLM calls, background workers, or new app features.
 
 ## How To Use This Repository
 
@@ -54,6 +54,7 @@ Start by reading:
 - `docs/09-workflow-detail-trace-viewer.md`
 - `docs/10-e2e-tests.md`
 - `docs/11-docker-compose.md`
+- `docs/12-github-actions-ci.md`
 - `docs/glossary.md`
 - `backend/README.md`
 - `frontend/README.md`
@@ -67,7 +68,7 @@ make lint
 make docs
 ```
 
-In Phase 11, `make test` and `make lint` delegate to the backend test and lint commands. Frontend checks run from the `frontend` folder with `npm test`, `npm run build`, and `npm run test:e2e`. The Docker stack runs with `docker compose up --build`.
+In Phase 12, `make test` and `make lint` delegate to the backend test and lint commands. Frontend checks run from the `frontend` folder with `npm test`, `npm run build`, and `npm run test:e2e`. CI runs the same core checks on push and pull request.
 
 ## Phase Rule
 
