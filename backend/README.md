@@ -1,8 +1,8 @@
 # Backend
 
-This folder contains the FastAPI backend foundation, database model layer, workflow run API, deterministic agent simulator, and Phase 05 validation engine.
+This folder contains the FastAPI backend foundation, database model layer, workflow run API, deterministic agent simulator, validation engine, and Phase 06 human approval flow.
 
-Phase 05 adds deterministic validation rules after simulated execution. It does not add human approval endpoints, frontend code, Docker, real LLM calls, or background workers.
+Phase 06 adds approve and reject endpoints for workflows that require human review. It does not add frontend code, Docker, real LLM calls, or background workers.
 
 ## Structure
 
@@ -25,6 +25,7 @@ backend/
       validation_result.py
       approval_decision.py
     schemas/
+      approval_decision.py
       workflow_run.py
     services/
       agent_simulator.py
@@ -36,6 +37,7 @@ backend/
       test_agent_simulator.py
       test_workflow_execution_api.py
       test_validation_engine.py
+      test_human_approval_api.py
   alembic/
   pyproject.toml
   README.md
@@ -73,6 +75,9 @@ curl -X POST http://localhost:8000/api/workflow-runs ^
 curl http://localhost:8000/api/workflow-runs
 curl http://localhost:8000/api/workflow-runs/1
 curl -X POST http://localhost:8000/api/workflow-runs/1/execute
+curl -X POST http://localhost:8000/api/workflow-runs/1/approve ^
+  -H "Content-Type: application/json" ^
+  -d "{\"reviewer_name\":\"local reviewer\",\"comment\":\"Approved after review.\"}"
 ```
 
 These workflow endpoints need a migrated database. For normal development, use PostgreSQL and run `alembic upgrade head` first.

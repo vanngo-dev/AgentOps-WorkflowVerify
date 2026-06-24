@@ -32,11 +32,11 @@ No phase may begin until the previous phase is complete. This keeps the project 
 
 ## Current Phase Status
 
-Current phase: Phase 05 - Validation Engine
+Current phase: Phase 06 - Human Approval Flow
 
-Status: deterministic validation engine added
+Status: human approval flow added
 
-This phase adds deterministic validation rules that run after simulated execution, store validation results, assign risk levels, and choose the final workflow status. It does not add human approval endpoints, frontend code, Docker, real LLM calls, or background workers.
+This phase adds approve and reject endpoints for workflows waiting in `approval_required` status. It does not add frontend code, Docker, real LLM calls, or background workers.
 
 ## How To Use This Repository
 
@@ -48,6 +48,7 @@ Start by reading:
 - `docs/03-workflow-api.md`
 - `docs/04-agent-simulator.md`
 - `docs/05-validation-engine.md`
+- `docs/06-human-approval.md`
 - `docs/glossary.md`
 - `backend/README.md`
 - `frontend/README.md`
@@ -61,7 +62,7 @@ make lint
 make docs
 ```
 
-In Phase 05, `make test` and `make lint` delegate to the backend test and lint commands.
+In Phase 06, `make test` and `make lint` delegate to the backend test and lint commands.
 
 ## Phase Rule
 
