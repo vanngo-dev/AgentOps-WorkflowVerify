@@ -215,6 +215,12 @@ function WorkflowSummary({ workflowRun }: { workflowRun: WorkflowRunDetail }) {
             <dd>{formatTimestamp(workflowRun.completed_at)}</dd>
           </div>
         ) : null}
+        {workflowRun.trace_id ? (
+          <div>
+            <dt>Trace ID</dt>
+            <dd className="trace-id-value">{workflowRun.trace_id}</dd>
+          </div>
+        ) : null}
       </dl>
     </div>
   );

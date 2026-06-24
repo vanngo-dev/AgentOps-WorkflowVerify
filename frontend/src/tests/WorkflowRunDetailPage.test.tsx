@@ -45,6 +45,17 @@ test("detail page renders workflow summary", async () => {
   expect(screen.getByText("low")).not.toBeNull();
 });
 
+test("detail page renders trace id when provided", async () => {
+  api.getWorkflowRun.mockResolvedValue(
+    makeWorkflowRunDetail({ trace_id: "trace-phase-13" }),
+  );
+
+  render(<WorkflowRunDetailPage api={api} workflowRunId={1} />);
+
+  expect(await screen.findByText("Trace ID")).not.toBeNull();
+  expect(screen.getByText("trace-phase-13")).not.toBeNull();
+});
+
 test("detail page renders formatted input payload", async () => {
   api.getWorkflowRun.mockResolvedValue(makeWorkflowRunDetail());
 

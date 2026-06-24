@@ -1,11 +1,15 @@
+import logging
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from typing import Any
 
 from sqlalchemy.orm import Session
 
+from app.core.request_context import get_trace_id
 from app.models.validation_result import ValidationResult
 from app.models.workflow_run import WorkflowRun
+
+logger = logging.getLogger(__name__)
 
 ALLOWED_DECISIONS = {"approve", "review", "reject"}
 ALLOWED_SEVERITIES = {"info", "warning", "error"}
@@ -31,6 +35,27 @@ def validate_workflow_run(db: Session, workflow_run: WorkflowRun) -> str:
 
     workflow_run.risk_level = determine_risk_level(amount)
     rule_results = evaluate_rules(output_payload, extracted, workflow_run.risk_level)
+    failed_count = sum(not rule_result.passed for rule_result in rule_results)
+    warning_count = sum(
+        not rule_result.passed and rule_result.severity == "warning"
+        for rule_result in rule_results
+    )
+    error_count = sum(
+        not rule_result.passed and rule_result.severity == "error"
+        for rule_result in rule_results
+    )
+
+    logger.info(
+        "event=validation_summary trace_id=%s workflow_run_id=%s "
+        "risk_level=%s passed=%s failed=%s warnings=%s errors=%s",
+        get_trace_id(),
+        workflow_run.id,
+        workflow_run.risk_level,
+        len(rule_results) - failed_count,
+        failed_count,
+        warning_count,
+        error_count,
+    )
 
     for rule_result in rule_results:
         db.add(
@@ -48,6 +73,15 @@ def validate_workflow_run(db: Session, workflow_run: WorkflowRun) -> str:
         workflow_run.risk_level,
     )
     workflow_run.updated_at = utc_now()
+
+    logger.info(
+        "event=validation_status trace_id=%s workflow_run_id=%s status=%s "
+        "risk_level=%s",
+        get_trace_id(),
+        workflow_run.id,
+        workflow_run.status,
+        workflow_run.risk_level,
+    )
 
     return workflow_run.status
 

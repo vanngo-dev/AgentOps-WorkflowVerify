@@ -6,6 +6,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.pool import StaticPool
 
+from app.core.request_context import TRACE_ID_HEADER
 from app.db.base import Base
 from app.db.session import get_db
 from app.main import app
@@ -91,6 +92,18 @@ def test_detail_endpoint_returns_workflow_summary(client: TestClient) -> None:
     assert data["agent_steps"] == []
     assert data["validation_results"] == []
     assert data["approval_decisions"] == []
+
+
+def test_detail_endpoint_includes_trace_id(client: TestClient) -> None:
+    workflow_run = create_workflow_run(client)
+
+    response = client.get(
+        f"/api/workflow-runs/{workflow_run['id']}",
+        headers={TRACE_ID_HEADER: "phase-13-trace-id"},
+    )
+
+    assert response.status_code == 200
+    assert response.json()["trace_id"] == "phase-13-trace-id"
 
 
 def test_detail_endpoint_includes_agent_steps_after_execution(

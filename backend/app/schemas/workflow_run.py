@@ -28,6 +28,7 @@ class WorkflowRunRead(BaseModel):
 
 
 class WorkflowRunDetailRead(WorkflowRunRead):
+    trace_id: str | None = None
     agent_steps: list[AgentStepRead]
     validation_results: list[ValidationResultRead]
     approval_decisions: list[ApprovalDecisionRead]

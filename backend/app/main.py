@@ -5,6 +5,7 @@ from app.api.health import router as health_router
 from app.api.workflow_runs import router as workflow_runs_router
 from app.core.config import get_settings
 from app.core.logging import configure_logging
+from app.middleware.request_id import request_id_middleware
 
 settings = get_settings()
 configure_logging(settings)
@@ -16,5 +17,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.middleware("http")(request_id_middleware)
 app.include_router(health_router)
 app.include_router(workflow_runs_router)

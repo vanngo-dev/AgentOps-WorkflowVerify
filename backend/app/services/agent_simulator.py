@@ -1,11 +1,15 @@
+import logging
 from datetime import UTC, datetime
 from typing import Any
 
 from sqlalchemy.orm import Session
 
+from app.core.request_context import get_trace_id
 from app.models.agent_step import AgentStep
 from app.models.workflow_run import WorkflowRun
 from app.services.validation_engine import TERMINAL_STATUSES, validate_workflow_run
+
+logger = logging.getLogger(__name__)
 
 SIMULATED_STEP_NAMES = (
     "inspect_input",
@@ -30,7 +34,22 @@ def execute_workflow_run(db: Session, workflow_run: WorkflowRun) -> WorkflowRun:
     workflow_run.updated_at = utc_now()
     db.flush()
 
+    logger.info(
+        "event=workflow_execution_start trace_id=%s workflow_run_id=%s status=%s",
+        get_trace_id(),
+        workflow_run.id,
+        workflow_run.status,
+    )
+
     for step_index, step_name in enumerate(SIMULATED_STEP_NAMES, start=1):
+        logger.info(
+            "event=agent_step_created trace_id=%s workflow_run_id=%s "
+            "step_index=%s step_name=%s",
+            get_trace_id(),
+            workflow_run.id,
+            step_index,
+            step_name,
+        )
         started_at = utc_now()
         input_snapshot = dict(context)
         output_snapshot = run_simulated_step(step_name, context)
@@ -49,6 +68,14 @@ def execute_workflow_run(db: Session, workflow_run: WorkflowRun) -> WorkflowRun:
                 error_message=None,
             ),
         )
+        logger.info(
+            "event=agent_step_completed trace_id=%s workflow_run_id=%s "
+            "step_index=%s step_name=%s status=completed",
+            get_trace_id(),
+            workflow_run.id,
+            step_index,
+            step_name,
+        )
 
     final_output = context["produce_decision"]
     finished_at = utc_now()
@@ -64,6 +91,15 @@ def execute_workflow_run(db: Session, workflow_run: WorkflowRun) -> WorkflowRun:
 
     db.commit()
     db.refresh(workflow_run)
+
+    logger.info(
+        "event=workflow_execution_finished trace_id=%s workflow_run_id=%s "
+        "status=%s risk_level=%s",
+        get_trace_id(),
+        workflow_run.id,
+        workflow_run.status,
+        workflow_run.risk_level,
+    )
 
     return workflow_run
 
