@@ -32,11 +32,11 @@ No phase may begin until the previous phase is complete. This keeps the project 
 
 ## Current Phase Status
 
-Current phase: Phase 10 - End-To-End Testing
+Current phase: Phase 11 - Docker Compose Local Environment
 
-Status: Playwright end-to-end tests added
+Status: Docker Compose local environment added
 
-This phase adds Playwright end-to-end tests that prove browser workflows can create, execute, inspect, and approve runs through the live frontend and backend. It does not add Docker, GitHub Actions, real LLM calls, background workers, or redesign existing frontend/backend behavior.
+This phase adds a local Docker Compose environment with PostgreSQL, FastAPI backend, and React/Vite frontend services. It does not add GitHub Actions, real LLM calls, background workers, or redesign existing app behavior.
 
 ## How To Use This Repository
 
@@ -53,6 +53,7 @@ Start by reading:
 - `docs/08-workflow-dashboard.md`
 - `docs/09-workflow-detail-trace-viewer.md`
 - `docs/10-e2e-tests.md`
+- `docs/11-docker-compose.md`
 - `docs/glossary.md`
 - `backend/README.md`
 - `frontend/README.md`
@@ -66,7 +67,7 @@ make lint
 make docs
 ```
 
-In Phase 10, `make test` and `make lint` delegate to the backend test and lint commands. Frontend checks run from the `frontend` folder with `npm test`, `npm run build`, and `npm run test:e2e`.
+In Phase 11, `make test` and `make lint` delegate to the backend test and lint commands. Frontend checks run from the `frontend` folder with `npm test`, `npm run build`, and `npm run test:e2e`. The Docker stack runs with `docker compose up --build`.
 
 ## Phase Rule
 

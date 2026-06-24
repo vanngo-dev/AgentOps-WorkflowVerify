@@ -29,4 +29,5 @@ docs:
 > @echo "Read docs/08-workflow-dashboard.md"
 > @echo "Read docs/09-workflow-detail-trace-viewer.md"
 > @echo "Read docs/10-e2e-tests.md"
+> @echo "Read docs/11-docker-compose.md"
 > @echo "Read docs/glossary.md"

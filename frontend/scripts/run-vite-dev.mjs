@@ -1,5 +1,5 @@
 import react from "@vitejs/plugin-react";
-import { createServer } from "vite";
+import { createServer, loadEnv } from "vite";
 
 import {
   patchWindowsNetworkDriveProbe,
@@ -7,6 +7,11 @@ import {
 } from "./vite-sandbox-support.mjs";
 
 patchWindowsNetworkDriveProbe();
+
+applyLoadedEnv("development");
+
+const host = process.env.VITE_HOST ?? "127.0.0.1";
+const port = Number(process.env.VITE_PORT ?? "5173");
 
 const server = await createServer({
   configFile: false,
@@ -20,8 +25,8 @@ const server = await createServer({
   plugins: [typescriptTransformPlugin(), react()],
   root: process.cwd(),
   server: {
-    host: "127.0.0.1",
-    port: 5173,
+    host,
+    port,
   },
 });
 
@@ -35,3 +40,11 @@ async function shutdown() {
 
 process.on("SIGINT", shutdown);
 process.on("SIGTERM", shutdown);
+
+function applyLoadedEnv(mode) {
+  const loadedEnv = loadEnv(mode, process.cwd(), "");
+
+  for (const [key, value] of Object.entries(loadedEnv)) {
+    process.env[key] ??= value;
+  }
+}

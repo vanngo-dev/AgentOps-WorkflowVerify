@@ -2,9 +2,9 @@
 
 This folder contains the React and TypeScript frontend for the AgentOps Workflow Verification Platform.
 
-Phase 10 adds Playwright end-to-end tests on top of the workflow dashboard and detail viewer. The browser tests create workflows, execute them, inspect trace evidence, and approve a high-risk workflow against the live frontend and backend.
+Phase 11 adds a Dockerfile used by the root Compose stack. The frontend still supports the local npm workflow and can also run in Docker against the backend at `http://localhost:8000`.
 
-This phase does not add Docker, GitHub Actions, background workers, real LLM calls, or frontend/backend redesign work.
+This phase does not add GitHub Actions, background workers, real LLM calls, or frontend/backend redesign work.
 
 ## Configuration
 
@@ -36,3 +36,19 @@ npm run build
 npm run playwright:install
 npm run test:e2e
 ```
+
+## Run With Docker Compose
+
+From the repository root:
+
+```sh
+docker compose up --build
+```
+
+Open:
+
+```text
+http://localhost:5173/workflow-runs
+```
+
+The Compose stack sets `VITE_API_BASE_URL=http://localhost:8000` so browser requests go to the published backend port.

@@ -1,8 +1,8 @@
 # Backend
 
-This folder contains the FastAPI backend foundation, database model layer, workflow run API, deterministic agent simulator, validation engine, human approval flow, and workflow detail API.
+This folder contains the FastAPI backend foundation, database model layer, workflow run API, deterministic agent simulator, validation engine, human approval flow, workflow detail API, and Docker backend image definition.
 
-Phase 09 expands workflow detail reads so the frontend can show run summary, payloads, agent steps, validation results, and approval history. It does not add Docker, real LLM calls, background workers, or observability infrastructure.
+Phase 11 adds a Dockerfile used by the root Compose stack. It keeps the local virtualenv workflow available and does not add real LLM calls, background workers, or observability infrastructure.
 
 ## Structure
 
@@ -42,6 +42,7 @@ backend/
       test_human_approval_api.py
       test_workflow_detail_api.py
   alembic/
+  Dockerfile
   pyproject.toml
   README.md
 ```
@@ -84,6 +85,27 @@ curl -X POST http://localhost:8000/api/workflow-runs/1/approve ^
 ```
 
 These workflow endpoints need a migrated database. For normal development, use PostgreSQL and run `alembic upgrade head` first.
+
+## Run With Docker Compose
+
+From the repository root:
+
+```sh
+docker compose up --build
+```
+
+The backend container runs:
+
+```sh
+python -m alembic upgrade head
+python -m uvicorn app.main:app --host 0.0.0.0 --port 8000
+```
+
+Check backend health from the host:
+
+```sh
+curl http://localhost:8000/health
+```
 
 ## Test
 

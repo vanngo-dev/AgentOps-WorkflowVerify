@@ -4,6 +4,7 @@ import path from "node:path";
 import commonjs from "@rollup/plugin-commonjs";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import { rollup } from "rollup";
+import { loadEnv } from "vite";
 
 import {
   patchWindowsNetworkDriveProbe,
@@ -13,6 +14,8 @@ import {
 patchWindowsNetworkDriveProbe();
 
 const root = process.cwd();
+applyLoadedEnv(process.env.MODE ?? process.env.NODE_ENV ?? "production", root);
+
 const outDir = path.join(root, "dist");
 const assetsDir = path.join(outDir, "assets");
 const nodeEnv = process.env.NODE_ENV ?? "production";
@@ -106,4 +109,12 @@ function environmentReplacePlugin() {
       };
     },
   };
+}
+
+function applyLoadedEnv(mode, envRoot) {
+  const loadedEnv = loadEnv(mode, envRoot, "");
+
+  for (const [key, value] of Object.entries(loadedEnv)) {
+    process.env[key] ??= value;
+  }
 }
