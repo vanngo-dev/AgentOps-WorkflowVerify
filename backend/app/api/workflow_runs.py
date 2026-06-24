@@ -2,13 +2,17 @@ from datetime import UTC, datetime
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, selectinload
 
 from app.db.session import get_db
 from app.models.approval_decision import ApprovalDecision
 from app.models.workflow_run import WorkflowRun
 from app.schemas.approval_decision import ApprovalDecisionCreate
-from app.schemas.workflow_run import WorkflowRunCreate, WorkflowRunRead
+from app.schemas.workflow_run import (
+    WorkflowRunCreate,
+    WorkflowRunDetailRead,
+    WorkflowRunRead,
+)
 from app.services.agent_simulator import execute_workflow_run
 
 router = APIRouter(prefix="/api/workflow-runs", tags=["workflow runs"])
@@ -98,12 +102,21 @@ def reject_workflow_run(
     )
 
 
-@router.get("/{workflow_run_id}", response_model=WorkflowRunRead)
+@router.get("/{workflow_run_id}", response_model=WorkflowRunDetailRead)
 def read_workflow_run(
     workflow_run_id: int,
     db: Session = Depends(get_db),
 ) -> WorkflowRun:
-    workflow_run = db.get(WorkflowRun, workflow_run_id)
+    statement = (
+        select(WorkflowRun)
+        .where(WorkflowRun.id == workflow_run_id)
+        .options(
+            selectinload(WorkflowRun.agent_steps),
+            selectinload(WorkflowRun.validation_results),
+            selectinload(WorkflowRun.approval_decisions),
+        )
+    )
+    workflow_run = db.scalars(statement).one_or_none()
 
     if workflow_run is None:
         raise HTTPException(

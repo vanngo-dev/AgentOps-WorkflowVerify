@@ -1,4 +1,10 @@
-import { type FormEvent, useCallback, useEffect, useState } from "react";
+import {
+  type FormEvent,
+  type MouseEvent,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 
 import {
   createWorkflowRun,
@@ -15,6 +21,7 @@ type WorkflowRunsApi = {
 
 type WorkflowRunsPageProps = {
   api?: WorkflowRunsApi;
+  onNavigate?: (path: string) => void;
 };
 
 type FormState = {
@@ -39,6 +46,7 @@ const defaultApi: WorkflowRunsApi = {
 
 export default function WorkflowRunsPage({
   api = defaultApi,
+  onNavigate,
 }: WorkflowRunsPageProps) {
   const [workflowRuns, setWorkflowRuns] = useState<WorkflowRun[]>([]);
   const [formState, setFormState] = useState<FormState>(initialFormState);
@@ -215,6 +223,7 @@ export default function WorkflowRunsPage({
           <WorkflowRunTable
             executingId={executingId}
             onExecute={handleExecuteWorkflowRun}
+            onNavigate={onNavigate}
             workflowRuns={workflowRuns}
           />
         ) : null}
@@ -226,14 +235,28 @@ export default function WorkflowRunsPage({
 type WorkflowRunTableProps = {
   executingId: number | null;
   onExecute: (workflowRunId: number) => void;
+  onNavigate?: (path: string) => void;
   workflowRuns: WorkflowRun[];
 };
 
 function WorkflowRunTable({
   executingId,
   onExecute,
+  onNavigate,
   workflowRuns,
 }: WorkflowRunTableProps) {
+  function handleDetailClick(
+    event: MouseEvent<HTMLAnchorElement>,
+    workflowRunId: number,
+  ) {
+    if (!onNavigate || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+      return;
+    }
+
+    event.preventDefault();
+    onNavigate(`/workflow-runs/${workflowRunId}`);
+  }
+
   return (
     <div className="workflow-table-wrap">
       <table className="workflow-table">
@@ -249,7 +272,15 @@ function WorkflowRunTable({
         <tbody>
           {workflowRuns.map((workflowRun) => (
             <tr key={workflowRun.id}>
-              <td>{workflowRun.name}</td>
+              <td>
+                <a
+                  className="table-link"
+                  href={`/workflow-runs/${workflowRun.id}`}
+                  onClick={(event) => handleDetailClick(event, workflowRun.id)}
+                >
+                  {workflowRun.name}
+                </a>
+              </td>
               <td>
                 <span className="status-pill">{workflowRun.status}</span>
               </td>

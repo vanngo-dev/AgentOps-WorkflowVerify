@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import Layout from "./components/Layout";
 import HomePage from "./pages/HomePage";
+import WorkflowRunDetailPage from "./pages/WorkflowRunDetailPage";
 import WorkflowRunsPage from "./pages/WorkflowRunsPage";
 
 function getCurrentPath() {
@@ -38,8 +39,17 @@ export default function App() {
     [currentPath],
   );
 
-  const page =
-    currentPath === "/workflow-runs" ? <WorkflowRunsPage /> : <HomePage />;
+  const workflowRunDetailMatch = currentPath.match(/^\/workflow-runs\/(\d+)$/);
+  const page = workflowRunDetailMatch ? (
+    <WorkflowRunDetailPage
+      workflowRunId={Number(workflowRunDetailMatch[1])}
+      onNavigate={handleNavigate}
+    />
+  ) : currentPath === "/workflow-runs" ? (
+    <WorkflowRunsPage onNavigate={handleNavigate} />
+  ) : (
+    <HomePage />
+  );
 
   return (
     <Layout currentPath={currentPath} onNavigate={handleNavigate}>

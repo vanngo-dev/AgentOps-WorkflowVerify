@@ -19,6 +19,9 @@ dependencies = [
 testpaths = ["app/tests"]
 pythonpath = ["."]
 
+[tool.setuptools.packages.find]
+include = ["app*"]
+
 [tool.ruff]
 line-length = 88
 target-version = "py312"

@@ -32,11 +32,11 @@ No phase may begin until the previous phase is complete. This keeps the project 
 
 ## Current Phase Status
 
-Current phase: Phase 08 - Workflow Dashboard
+Current phase: Phase 09 - Workflow Detail And Trace Viewer
 
-Status: workflow dashboard added
+Status: workflow detail and trace viewer added
 
-This phase connects the Workflow Runs page to the backend workflow API. It adds listing, create, execute, loading, empty, and error states. It does not add workflow detail pages, trace viewing, approve/reject UI, Playwright, Docker, or real LLM calls.
+This phase adds workflow detail views for inspecting workflow evidence. It shows summary state, input and output payloads, agent step traces, validation results, approval history, and approve/reject actions for workflows waiting on human review. It does not add Playwright, Docker, GitHub Actions, background workers, real LLM calls, or observability infrastructure.
 
 ## How To Use This Repository
 
@@ -51,6 +51,7 @@ Start by reading:
 - `docs/06-human-approval.md`
 - `docs/07-frontend-shell.md`
 - `docs/08-workflow-dashboard.md`
+- `docs/09-workflow-detail-trace-viewer.md`
 - `docs/glossary.md`
 - `backend/README.md`
 - `frontend/README.md`
@@ -64,7 +65,7 @@ make lint
 make docs
 ```
 
-In Phase 08, `make test` and `make lint` delegate to the backend test and lint commands. Frontend checks run from the `frontend` folder with `npm test` and `npm run build`.
+In Phase 09, `make test` and `make lint` delegate to the backend test and lint commands. Frontend checks run from the `frontend` folder with `npm test` and `npm run build`.
 
 ## Phase Rule
 

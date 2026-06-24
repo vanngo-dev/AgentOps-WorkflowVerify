@@ -27,4 +27,5 @@ docs:
 > @echo "Read docs/06-human-approval.md"
 > @echo "Read docs/07-frontend-shell.md"
 > @echo "Read docs/08-workflow-dashboard.md"
+> @echo "Read docs/09-workflow-detail-trace-viewer.md"
 > @echo "Read docs/glossary.md"

@@ -55,8 +55,10 @@ class WorkflowRun(Base):
     validation_results: Mapped[list[ValidationResult]] = relationship(
         back_populates="workflow_run",
         cascade="all, delete-orphan",
+        order_by="ValidationResult.id",
     )
     approval_decisions: Mapped[list[ApprovalDecision]] = relationship(
         back_populates="workflow_run",
         cascade="all, delete-orphan",
+        order_by="ApprovalDecision.id",
     )

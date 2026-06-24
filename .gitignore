@@ -12,6 +12,7 @@ __pycache__/
 .ruff_cache/
 .venv/
 venv/
+*.egg-info/
 *.tsbuildinfo
 
 # Node and frontend tooling
@@ -21,6 +22,8 @@ build/
 .next/
 .vite/
 coverage/
+.vitest-outside-smoke/
+frontend/.vitest-scratch/
 
 # Logs
 *.log

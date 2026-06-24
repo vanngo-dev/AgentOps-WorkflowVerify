@@ -153,6 +153,18 @@ test("execute button calls API client", async () => {
   });
 });
 
+test("dashboard rows link to detail page", async () => {
+  api.listWorkflowRuns.mockResolvedValue([
+    makeWorkflowRun({ id: 42, name: "linked invoice" }),
+  ]);
+
+  render(<WorkflowRunsPage api={api} />);
+
+  const link = await screen.findByRole("link", { name: "linked invoice" });
+
+  expect(link.getAttribute("href")).toBe("/workflow-runs/42");
+});
+
 function makeWorkflowRun(overrides: Partial<WorkflowRun> = {}): WorkflowRun {
   return {
     id: 1,
