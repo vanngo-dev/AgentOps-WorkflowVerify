@@ -15,6 +15,8 @@ patchWindowsNetworkDriveProbe();
 const root = process.cwd();
 const outDir = path.join(root, "dist");
 const assetsDir = path.join(outDir, "assets");
+const nodeEnv = process.env.NODE_ENV ?? "production";
+const apiBaseUrl = process.env.VITE_API_BASE_URL ?? "http://localhost:8000";
 
 await fs.rm(outDir, { force: true, recursive: true });
 await fs.mkdir(assetsDir, { recursive: true });
@@ -22,6 +24,7 @@ await fs.mkdir(assetsDir, { recursive: true });
 const bundle = await rollup({
   input: path.join(root, "src/main.tsx"),
   plugins: [
+    environmentReplacePlugin(),
     typescriptTransformPlugin(),
     cssAssetPlugin(),
     nodeResolve({
@@ -74,6 +77,33 @@ function cssAssetPlugin() {
           type: "asset",
         });
       }
+    },
+  };
+}
+
+function environmentReplacePlugin() {
+  return {
+    name: "agentops-environment-replace",
+    transform(code, id) {
+      if (!/\.[cm]?[jt]sx?$/.test(id)) {
+        return null;
+      }
+
+      const nextCode = code
+        .replaceAll("process.env.NODE_ENV", JSON.stringify(nodeEnv))
+        .replaceAll(
+          "import.meta.env.VITE_API_BASE_URL",
+          JSON.stringify(apiBaseUrl),
+        );
+
+      if (nextCode === code) {
+        return null;
+      }
+
+      return {
+        code: nextCode,
+        map: null,
+      };
     },
   };
 }

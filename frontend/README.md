@@ -2,9 +2,9 @@
 
 This folder contains the React and TypeScript frontend for the AgentOps Workflow Verification Platform.
 
-Phase 09 adds workflow detail and trace viewing on top of the workflow dashboard. Operators can open a run, inspect payloads, review agent steps and validation results, see approval history, and approve or reject workflows that are waiting for human review.
+Phase 10 adds Playwright end-to-end tests on top of the workflow dashboard and detail viewer. The browser tests create workflows, execute them, inspect trace evidence, and approve a high-risk workflow against the live frontend and backend.
 
-This phase does not add Playwright, Docker, GitHub Actions, background workers, real LLM calls, or observability infrastructure.
+This phase does not add Docker, GitHub Actions, background workers, real LLM calls, or frontend/backend redesign work.
 
 ## Configuration
 
@@ -33,4 +33,6 @@ http://localhost:5173/workflow-runs/1
 ```sh
 npm test
 npm run build
+npm run playwright:install
+npm run test:e2e
 ```

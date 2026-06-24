@@ -32,11 +32,11 @@ No phase may begin until the previous phase is complete. This keeps the project 
 
 ## Current Phase Status
 
-Current phase: Phase 09 - Workflow Detail And Trace Viewer
+Current phase: Phase 10 - End-To-End Testing
 
-Status: workflow detail and trace viewer added
+Status: Playwright end-to-end tests added
 
-This phase adds workflow detail views for inspecting workflow evidence. It shows summary state, input and output payloads, agent step traces, validation results, approval history, and approve/reject actions for workflows waiting on human review. It does not add Playwright, Docker, GitHub Actions, background workers, real LLM calls, or observability infrastructure.
+This phase adds Playwright end-to-end tests that prove browser workflows can create, execute, inspect, and approve runs through the live frontend and backend. It does not add Docker, GitHub Actions, real LLM calls, background workers, or redesign existing frontend/backend behavior.
 
 ## How To Use This Repository
 
@@ -52,6 +52,7 @@ Start by reading:
 - `docs/07-frontend-shell.md`
 - `docs/08-workflow-dashboard.md`
 - `docs/09-workflow-detail-trace-viewer.md`
+- `docs/10-e2e-tests.md`
 - `docs/glossary.md`
 - `backend/README.md`
 - `frontend/README.md`
@@ -65,7 +66,7 @@ make lint
 make docs
 ```
 
-In Phase 09, `make test` and `make lint` delegate to the backend test and lint commands. Frontend checks run from the `frontend` folder with `npm test` and `npm run build`.
+In Phase 10, `make test` and `make lint` delegate to the backend test and lint commands. Frontend checks run from the `frontend` folder with `npm test`, `npm run build`, and `npm run test:e2e`.
 
 ## Phase Rule
 

@@ -24,6 +24,10 @@ build/
 coverage/
 .vitest-outside-smoke/
 frontend/.vitest-scratch/
+playwright-report/
+test-results/
+frontend/playwright-report/
+frontend/test-results/
 
 # Logs
 *.log
