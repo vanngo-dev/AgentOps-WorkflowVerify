@@ -31,4 +31,7 @@ docs:
 > @echo "Read docs/10-e2e-tests.md"
 > @echo "Read docs/11-docker-compose.md"
 > @echo "Read docs/12-github-actions-ci.md"
+> @echo "Read docs/13-observability-structured-logs.md"
+> @echo "Read docs/14-architecture-review.md"
+> @echo "Read docs/final-verification-checklist.md"
 > @echo "Read docs/glossary.md"

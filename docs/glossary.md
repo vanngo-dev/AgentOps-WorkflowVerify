@@ -20,11 +20,29 @@ An approval checkpoint is a required pause in a workflow where a human must revi
 
 For example, an agent might draft a customer response, but a person must approve it before it is sent.
 
+## Continuous Integration
+
+Continuous integration, or CI, is an automated quality gate that runs checks after code is pushed or a pull request is opened.
+
+In this project, GitHub Actions runs backend tests and lint, frontend tests and build, Playwright E2E tests, and Docker Compose config validation.
+
 ## Deterministic Simulated Agent
 
 A deterministic simulated agent is a fake agent that follows predictable rules.
 
 It is useful at the beginning because it lets us build the platform without debugging LLM randomness at the same time.
+
+## Docker Compose
+
+Docker Compose runs multiple local services from one configuration file.
+
+In this project, Compose starts PostgreSQL, the FastAPI backend, and the React/Vite frontend for local development.
+
+## End-To-End Test
+
+An end-to-end test checks a real user path across the browser, frontend, backend, and database.
+
+In this project, Playwright E2E tests create and execute workflows through the UI.
 
 ## Human Approval
 
@@ -49,6 +67,12 @@ Each phase must be implemented, tested, documented, committed, and stopped befor
 Testing checks whether the system behaves the way we expect before we trust it.
 
 In this project, tests will eventually cover platform behavior, workflow rules, simulated agent runs, and user-facing review flows.
+
+## Trace ID
+
+A trace ID is an identifier attached to a request so logs and responses can be connected.
+
+In this project, the backend returns `X-Request-ID` on every response and uses that value in structured workflow logs.
 
 ## Validation
 
